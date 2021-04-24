@@ -5,11 +5,11 @@ var router = express.Router();
 // .ADO.Net is a wrapper over raw SQL server interface
 const mongoose = require("mongoose");
 
-const Pets = require("../Pets");
+const Orders = require("../Orders");
 
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
-const dbURI = "xxxxxxxx";
+const dbURI = "xxxxxxxxxxxxxxxxxxxx";
 //
 // 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
@@ -37,77 +37,76 @@ router.get('/', function(req, res) {
   res.sendFile('index.html');
 });
 
-/* GET all Pets */
-router.get('/Pets', function(req, res) {
+/* GET all Orders */
+router.get('/Orders', function(req, res) {
   // find {  takes values, but leaving it blank gets all}
-  Pets.find({}, (err, AllPets) => {
+  Orders.find({}, (err, AllOrders) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
     }
-    res.status(200).json(AllPets);
+    res.status(200).json(AllOrders);
   });
 });
 
 
 
 
-/* post a new Pet and push to Mongo */
-router.post('/NewPet', function(req, res) {
+/* post a new Order and push to Mongo */
+router.post('/NewOrder', function(req, res) {
 
-    let oneNewPet = new Pets(req.body);  
+    let oneNewOrder = new Orders(req.body);  
     console.log(req.body);
-    oneNewPet.save((err, pet) => {
+    oneNewOrder.save((err, order) => {
       if (err) {
         res.status(500).send(err);
       }
       else {
-      console.log(pet);
-      res.status(201).json(pet);
+      console.log(order);
+      res.status(201).json(order);
       }
     });
 });
 
 
-router.delete('/DeletePet/:id', function (req, res) {
-  Pets.deleteOne({ _id: req.params.id }, (err, note) => { 
+router.delete('/DeleteOrder/:id', function (req, res) {
+  Orders.deleteOne({ _id: req.params.id }, (err, note) => { 
     if (err) {
       res.status(404).send(err);
     }
-    res.status(200).json({ message: "Pet successfully deleted" });
+    res.status(200).json({ message: "Order successfully deleted" });
   });
 });
 
 
-router.put('/UpdatePet', function (req, res) {
-  Pets.findOneAndUpdate(
+router.put('/UpdateOrder', function (req, res) {
+  Orders.findOneAndUpdate(
     { _id: req.body.id },
     {
-      name: req.body.name,
-      age: req.body.age,
-      breed: req.body.breed,
-      gender: req.body.gender,
-      status: req.body.status
+      StoreID: req.body.StoreID,
+      SalesPersonID: req.body.SalesPersonID,
+      CdID: req.body.CdID,
+      PricePaid: req.body.PricePaid
     },
     { new: true },
-    (err, pet) => {
+    (err, order) => {
       if (err) {
         res.status(500).send(err);
     }
-    res.status(200).json(pet);
+    res.status(200).json(order);
     })
   });
 
 
-  /* GET one Pet */
-router.get('/FindPet/:id', function(req, res) {
+  /* GET one Order */
+router.get('/FindOrder/:id', function(req, res) {
   console.log(req.params.id );
-  Pets.find({ _id: req.params.id }, (err, onePet) => {
+  Orders.find({ _id: req.params.id }, (err, oneOrder) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
     }
-    res.status(200).json(onePet);
+    res.status(200).json(oneOrder);
   });
 });
 

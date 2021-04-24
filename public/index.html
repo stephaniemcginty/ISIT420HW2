@@ -3,30 +3,32 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Pet Shelter DataBase</title>
+    <title>Orders DataBase</title>
 <link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 </head>
 
 <body>
-<h2>Pet Shelter</h2>
+<h2>Orders Database</h2>
 <div class="grid-container">
    
 
 
-<div  class="grid-item">
-    <h3>Pets in Shelter</h3>
-    <button type="button" id=get>Show All Pets</button>
-    <ul id="listUl"></ul>
-</div>
-   
-   
-   
-   
     <div  class="grid-item">
-        <h3>Add a new Pet</h3>
-        <label for="addName">Name:</label>
+        <h3>Create Orders</h3>
+        <button type="button" id=create>Create New Order</button>
+        <p id="displayStoreID"></p>
+        <p id="displaySalesPersonID"></p>
+        <p id="displayCdID"></p>
+        <p id="displayPricePaid"></p>
+    </div>
+   
+
+
+    <div  class="grid-item">
+        <h3>Submit an Order</h3>
+        <!-- <label for="addName">Name:</label>
         <input type="text" id="addName" name="fname"><br><br>
         <label for="addAge">Age:</label>
         <input type="text" id="addAge" name="fname"><br><br>
@@ -35,26 +37,24 @@
         <label for="addGender">Gender:</label>
         <input type="text" id="addGender" name="fname"><br><br>
         <label for="addStatus">Adoption Status:</label>
-        <input type="text" id="addStatus" name="fname"><br><br>
-        <button type="button" id=submit>SUBMIT</button>
-       
+        <input type="text" id="addStatus" name="fname"><br><br> -->
+        <button type="button" id=submit>Submit Order</button>
     </div>
 
-   
+
 
     <div  class="grid-item">
-        <h3>Delete Pet by Name</h3>
+        <h3>Create & Submit 500</h3>
         <div>
-            Enter Pet Name here:  <input type="text" id="deleteName"><br><br>
-            <button type="button" id=delete>DELETE</button><br>
+            <button type="button" id=submit500>Create & Submit</button><br>
         </div>
     </div>
 
    
-    <div  class="grid-item">
-        <h3>Edit Pet</h3>
+    <!-- <div  class="grid-item">
+        <h3>Edit Order</h3>
         <div>
-            Enter Pet Name here: <input type="text" id="modPet"><br><br>
+            Enter Order ID: <input type="text" id="modOrder"><br><br>
             <button type="button" id=find>FIND</button><br>
         </div>
         <div>
@@ -66,8 +66,7 @@
         Adoption Status: <input type="text" id="modAdopted" name="fname"><br><br>
         <button type="button" id=modSubmit>SUBMIT</button>
         </div>
-   
-    </div>
+    </div> -->
 </div>
 
 <script src="/javascripts/index.js"></script>

@@ -1,20 +1,65 @@
-//pet object
-function Pet(pName, pAge, pBreed, pGender, pStatus) {
-    //this.id = pId;
-    this.id = 0;
-    this.name = pName;
-    this.age = pAge;
-    this.breed = pBreed;
-    this.gender = pGender;
-    this.status = pStatus;
+//order object
+function Order(pStoreID, pSalesPersonID, pCdID, pPricePaid) {
+    //this.id = 0;
+    this.StoreID = pStoreID;
+    this.SalesPersonID = pSalesPersonID;
+    this.CdID = pCdID;
+    this.PricePaid = pPricePaid;
 }
 
 //our local copy of the cloud data
-var PetNotes = [];
+var OrderArray = [];
+//contains StoreID and related SalesPersonID data
+var StoreArray = [
+    [98053, 1, 2, 3, 4],
+    [98007, 5, 6, 7, 8],
+    [98077, 9, 10, 11, 12],
+    [98055, 13, 14, 15, 16],
+    [98011, 17, 18, 19, 20],
+    [98046, 21, 22, 23, 24]
+];
+//contains sales person names corresponding to SalesPersonID
+var SalesPersonArray = [];
+//contains CdIds
+var CdArray = [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451];
+
+//generates random number between 0 and (max parameter - 1)
+function random(max) {
+    return Math.floor(Math.random() * max);
+}
 
 document.addEventListener("DOMContentLoaded", function (event) {
 
-    //add a pet to database
+    //generates new values and displays them on the page
+    document.getElementById("create").addEventListener("click", function () {
+        //gets elements on page to display information
+        var tStoreID = document.getElementById("displayStoreID");
+        var tSalesPersonID = document.getElementById("displaySalesPersonID");
+        var tCdID = document.getElementById("displayCdID");
+        var tPricePaid = document.getElementById("displayPricePaid");
+
+        //randomly select data from the corresponding arrays to generate a new random order
+        var storeIndex = random(6); //selects store index
+        randomStoreID = StoreArray[storeIndex][0];
+        randomSalesPersonID = StoreArray[storeIndex][random(4) + 1]; //selects random sales person from the selected store
+        randomCdID = CdArray[random(10)];
+        randomPrice = random(11) + 5; //selects random number between 5 and 15
+
+        //displays randomly generated information to the page
+        tStoreID.innerHTML = "StoreID: " + randomStoreID;
+        tSalesPersonID.innerHTML = "SalesPersonID: " + randomSalesPersonID;
+        tCdID.innerHTML = "CdID: " + randomCdID;
+        tPricePaid.innerHTML = "PricePaid: " + randomPrice;
+    });
+
+
+    /************************************
+     * Everything below is from the pets project
+     * I renamed all the variables and functions and left them for reference or if you need to use them
+     ************************************
+    */
+    
+    //add an order to database
     document.getElementById("submit").addEventListener("click", function () {
         //var tId = document.getElementById("addID").value
         var tName = document.getElementById("addName").value;
@@ -22,22 +67,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var tBreed = document.getElementById("addBreed").value;
         var tGender = document.getElementById("addGender").value;
         var tStatus = document.getElementById("addStatus").value;
-        var onePet = new Pet(tName, tAge, tBreed, tGender, tStatus);
-        //var onePet = new Pet(pId, tName, tAge, tBreed, tGender, tStatus);
+        var oneOrder = new Order(tName, tAge, tBreed, tGender, tStatus);
 
         $.ajax({
-            url: '/NewPet' ,
+            url: '/NewOrder' ,
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(onePet),
+            data: JSON.stringify(oneOrder),
             success: function (result) {
-                console.log("added new pet")
+                console.log("added new order")
             }
         });
     });
 
-    //get pet from database
+    
+    //get order from database
     document.getElementById("get").addEventListener("click", function () {
         
         var ul = document.getElementById('listUl');
@@ -45,15 +90,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
         
         //var ul = document.createElement('ul')
 
-        $.get("/Pets", function(data, status){  // AJAX get
-            PetNotes = data;  // put the returned server json data into our local array
+        $.get("/Orders", function(data, status){  // AJAX get
+            OrderArray = data;  // put the returned server json data into our local array
 
             // sort array by one property
-            PetNotes.sort(compare);  // see compare method below
+            OrderArray.sort(compare);  // see compare method below
             console.log(data);
             //listDiv.appendChild(ul);
-            PetNotes.forEach(ProcessOnePet); // build one li for each item in array
-            function ProcessOnePet(item, index) {
+            OrderArray.forEach(ProcessOneOrder); // build one li for each item in array
+            function ProcessOneOrder(item, index) {
                 var li = document.createElement('li');
                 ul.appendChild(li);
                 li.innerHTML=li.innerHTML + index + ", Name: " + item.name + "," + 
@@ -73,21 +118,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     });
   
-    //delete pet from database
+    //delete oder from database
     document.getElementById("delete").addEventListener("click", function () {
         
-        var whichPet = document.getElementById('deleteName').value;
+        var whichOrder = document.getElementById('deleteName').value;
         var idToDelete = "";
-        for(i=0; i< PetNotes.length; i++){
-            if(PetNotes[i].name === whichPet) {
-                idToDelete = PetNotes[i]._id;
+        for(i=0; i< OrderArray.length; i++){
+            if(OrderArray[i].name === whichOrder) {
+                idToDelete = OrderArray[i]._id;
            }
         }
         
         if(idToDelete != "")
         {
                      $.ajax({
-                    url: 'DeletePet/'+ idToDelete,
+                    url: 'DeleteOrder/'+ idToDelete,
                     type: 'DELETE',
                     contentType: 'application/json',
                     success: function (response) {
@@ -103,18 +148,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     });
 
-    //find pet to modify in the database
+    //find order to modify in the database
     document.getElementById("find").addEventListener("click", function () {
-        var pId = document.getElementById("modPet").value;
+        var pId = document.getElementById("modOrder").value;
         var idToFind = "";
-        for(i=0; i< PetNotes.length; i++){
-            if(PetNotes[i].name === pId) {
-                idToFind = PetNotes[i]._id;
+        for(i=0; i< OrderArray.length; i++){
+            if(OrderArray[i].name === pId) {
+                idToFind = OrderArray[i]._id;
            }
         }
         console.log(idToFind);
 
-        $.get("/FindPet/"+ idToFind, function(data, status){
+        $.get("/FindOrder/"+ idToFind, function(data, status){
             //console.log(data[0].id + " " + data[0].name);
             console.log(data[0].name);
             document.getElementById("modName").value = data[0].name;
@@ -125,9 +170,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     });
 
-    //modify pet in the database
+    //modify order in the database
     document.getElementById("modSubmit").addEventListener("click", function () {
-        var whichPet = document.getElementById('modPet').value;
+        var whichOrder = document.getElementById('modOrder').value;
         var idToChange = "";
 
         var eName = document.getElementById("modName").value;
@@ -136,16 +181,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var eGender = document.getElementById("modGender").value;
         var eStatus = document.getElementById("modAdopted").value;
 
-        for(i=0; i< PetNotes.length; i++){
-            if(PetNotes[i].name === whichPet) {
-                idToChange = PetNotes[i]._id
+        for(i=0; i< OrderArray.length; i++){
+            if(OrderArray[i].name === whichOrder) {
+                idToChange = OrderArray[i]._id
            }
         }
 
         if(idToChange != "")
         {
             $.ajax({
-                url: '/UpdatePet',
+                url: '/UpdateOrder',
                 type: 'PUT',
                 contentType: 'application/json',
                 data: JSON.stringify({
