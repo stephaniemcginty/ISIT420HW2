@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Pet Shelter DataBase</title>
+<link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+</head>
+
+<body>
+<h2>Pet Shelter</h2>
+<div class="grid-container">
+   
+
+
+<div  class="grid-item">
+    <h3>Pets in Shelter</h3>
+    <button type="button" id=get>Show All Pets</button>
+    <ul id="listUl"></ul>
+</div>
+   
+   
+   
+   
+    <div  class="grid-item">
+        <h3>Add a new Pet</h3>
+        <label for="addName">Name:</label>
+        <input type="text" id="addName" name="fname"><br><br>
+        <label for="addAge">Age:</label>
+        <input type="text" id="addAge" name="fname"><br><br>
+        <label for="addBreed">Breed:</label>
+        <input type="text" id="addBreed" name="fname"><br><br>
+        <label for="addGender">Gender:</label>
+        <input type="text" id="addGender" name="fname"><br><br>
+        <label for="addStatus">Adoption Status:</label>
+        <input type="text" id="addStatus" name="fname"><br><br>
+        <button type="button" id=submit>SUBMIT</button>
+       
+    </div>
+
+   
+
+    <div  class="grid-item">
+        <h3>Delete Pet by Name</h3>
+        <div>
+            Enter Pet Name here:  <input type="text" id="deleteName"><br><br>
+            <button type="button" id=delete>DELETE</button><br>
+        </div>
+    </div>
+
+   
+    <div  class="grid-item">
+        <h3>Edit Pet</h3>
+        <div>
+            Enter Pet Name here: <input type="text" id="modPet"><br><br>
+            <button type="button" id=find>FIND</button><br>
+        </div>
+        <div>
+            <h3>Edit these fields</h3>
+        Name: <input type="text" id="modName" name="fname"><br><br>
+        Age: <input type="text" id="modAge" name="fname"><br><br>
+        Breed: <input type="text" id="modBreed" name="fname"><br><br>
+        Gender: <input type="text" id="modGender" name="fname"><br><br>
+        Adoption Status: <input type="text" id="modAdopted" name="fname"><br><br>
+        <button type="button" id=modSubmit>SUBMIT</button>
+        </div>
+   
+    </div>
+</div>
+
+<script src="/javascripts/index.js"></script>
+</body>
+
+</html>
