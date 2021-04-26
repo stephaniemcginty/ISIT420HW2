@@ -5,8 +5,8 @@ function Order(pStoreID, pSalesPersonID, pCdID, pPricePaid) {
     this.SalesPersonID = pSalesPersonID;
     this.CdID = pCdID;
     this.PricePaid = pPricePaid;
-    this.HourPurch = 2;
-    this.DayPurch = 2;
+    this.HourPurch = 0;
+    this.DayPurch = 0;
 }
 var orderToSend;
 
@@ -29,6 +29,18 @@ var CdArray = [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 6
 //generates random number between 0 and (max parameter - 1)
 function random(max) {
     return Math.floor(Math.random() * max);
+}
+
+//generates order for submit 500
+function generateOrder(){
+    var storeIndex = random(6); //selects store index
+    randomStoreID = StoreArray[storeIndex][0];
+    randomSalesPersonID = StoreArray[storeIndex][random(4) + 1]; //selects random sales person from the selected store
+    randomCdID = CdArray[random(10)];
+    randomPricePaid = random(11) + 5; //selects random number between 5 and 15
+    // creates order from random data to submit for button #2
+    orderToSend = new Order(randomStoreID, randomSalesPersonID, randomCdID, randomPricePaid);
+    return(orderToSend);
 }
 
 document.addEventListener("DOMContentLoaded", function (event) {
@@ -92,17 +104,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
         //var tCdID = document.getElementById("addCdID").value;
         //var tPricePaid = document.getElementById("addPricePaid").value;
         //var oneOrder = new Order(randomStoreID, tSalesPersonID, tCdID, tPricePaid);
-        
-        $.ajax({
-            url: '/SubmitManyOrders' ,
-            method: 'POST',
-            dataType: 'json',
-            contentType: 'application/json',
-            data: JSON.stringify(orderToSend),
-            success: function (result) {
-                console.log("added new order")
-            }
-        });
+        var orderCounter = 0;
+        while(orderCounter < 500)
+        {
+            orderCounter += 1;
+            orderToSend = generateOrder();
+            $.ajax({
+                url: '/SubmitManyOrders' ,
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(orderToSend),
+                success: function (result) {
+                    console.log("added new order")
+                }
+            });
+        }
+
     });
 
     

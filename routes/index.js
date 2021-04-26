@@ -13,7 +13,7 @@ const Orders = require("../Orders");
 
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
-const dbURI = "xxxxxxxxxxxxxxxxxxxx";
+const dbURI = "mongodb+srv://stephanieUser:Bodhi12345@mycluster.ue1fv.mongodb.net/DocumentDB?retryWrites=true&w=majority";
 //
 // 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
@@ -40,7 +40,7 @@ function random(max) {
 
 function updateOrder(orderToUpdate)
 {
-  console.log("test4");
+  console.log("test5");
   
   // Increment GlobalHourPurch by a random number between 1 and 5
   GlobalHourPurch = GlobalHourPurch + (random(4)+1);
@@ -79,7 +79,7 @@ router.post('/SubmitManyOrders', function(req, res) {
   let oneNewOrder = new Orders(req.body);
   let updatedOrder = updateOrder(oneNewOrder);  
   console.log(updatedOrder);
-  oneNewOrder.save((err, order) => {
+  updatedOrder.save((err, order) => {
     if (err) {
       res.status(500).send(err);
     }
