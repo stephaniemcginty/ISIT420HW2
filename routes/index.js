@@ -13,7 +13,7 @@ const Orders = require("../Orders");
 
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
-const dbURI = "mongodb+srv://stephanieUser:Bodhi12345@mycluster.ue1fv.mongodb.net/DocumentDB?retryWrites=true&w=majority";
+const dbURI = "xxxxxxxxx";
 //
 // 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
