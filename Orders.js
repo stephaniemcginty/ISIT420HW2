@@ -23,6 +23,14 @@ const OrderSchema = new Schema({
   PricePaid: {
     type: Number,
     required: true
+  },
+  HourPurch: {
+    type: Number,
+    required: true
+  },
+  DayPurch: {
+    type: Number,
+    required: true
   }
 });
 

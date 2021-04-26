@@ -5,7 +5,10 @@ function Order(pStoreID, pSalesPersonID, pCdID, pPricePaid) {
     this.SalesPersonID = pSalesPersonID;
     this.CdID = pCdID;
     this.PricePaid = pPricePaid;
+    this.HourPurch = 2;
+    this.DayPurch = 2;
 }
+var orderToSend;
 
 //our local copy of the cloud data
 var OrderArray = [];
@@ -43,13 +46,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
         randomStoreID = StoreArray[storeIndex][0];
         randomSalesPersonID = StoreArray[storeIndex][random(4) + 1]; //selects random sales person from the selected store
         randomCdID = CdArray[random(10)];
-        randomPrice = random(11) + 5; //selects random number between 5 and 15
+        randomPricePaid = random(11) + 5; //selects random number between 5 and 15
+        // creates order from random data to submit for button #2
+        orderToSend = new Order(randomStoreID, randomSalesPersonID, randomCdID, randomPricePaid)
 
         //displays randomly generated information to the page
         tStoreID.innerHTML = "StoreID: " + randomStoreID;
         tSalesPersonID.innerHTML = "SalesPersonID: " + randomSalesPersonID;
         tCdID.innerHTML = "CdID: " + randomCdID;
-        tPricePaid.innerHTML = "PricePaid: " + randomPrice;
+        tPricePaid.innerHTML = "PricePaid: " + randomPricePaid;
     });
 
 
@@ -62,19 +67,38 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //add an order to database
     document.getElementById("submit").addEventListener("click", function () {
         //var tId = document.getElementById("addID").value
-        var tName = document.getElementById("addName").value;
-        var tAge = document.getElementById("addAge").value;
-        var tBreed = document.getElementById("addBreed").value;
-        var tGender = document.getElementById("addGender").value;
-        var tStatus = document.getElementById("addStatus").value;
-        var oneOrder = new Order(tName, tAge, tBreed, tGender, tStatus);
+        //var tStoreID = document.getElementById("addStoreID").value;
+        //var tSalesPersonID = document.getElementById("addSalesPersonID").value;
+        //var tCdID = document.getElementById("addCdID").value;
+        //var tPricePaid = document.getElementById("addPricePaid").value;
+        //var oneOrder = new Order(randomStoreID, tSalesPersonID, tCdID, tPricePaid);
 
         $.ajax({
-            url: '/NewOrder' ,
+            url: '/' ,
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(oneOrder),
+            data: JSON.stringify(orderToSend),
+            success: function (result) {
+                console.log("added new order")
+            }
+        });
+    });
+
+    document.getElementById("submit500").addEventListener("click", function () {
+        //var tId = document.getElementById("addID").value
+        //var tStoreID = document.getElementById("addStoreID").value;
+        //var tSalesPersonID = document.getElementById("addSalesPersonID").value;
+        //var tCdID = document.getElementById("addCdID").value;
+        //var tPricePaid = document.getElementById("addPricePaid").value;
+        //var oneOrder = new Order(randomStoreID, tSalesPersonID, tCdID, tPricePaid);
+        
+        $.ajax({
+            url: '/SubmitManyOrders' ,
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(orderToSend),
             success: function (result) {
                 console.log("added new order")
             }
